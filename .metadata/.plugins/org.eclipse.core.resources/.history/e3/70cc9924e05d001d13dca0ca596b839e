@@ -1,0 +1,77 @@
+package com.cibertec.beans;
+
+public class LibroDTO {
+
+	private int idLibro;
+	private String nomLibro;
+	private String editorial;
+	private String autor;
+	private String genero;
+	private String paisAutor;
+	private int numPaginas;
+	private double precio;
+
+	public int getIdLibro() {
+		return idLibro;
+	}
+
+	public void setIdLibro(int idLibro) {
+		this.idLibro = idLibro;
+	}
+
+	public String getNomLibro() {
+		return nomLibro;
+	}
+
+	public void setNomLibro(String nomLibro) {
+		this.nomLibro = nomLibro;
+	}
+
+	public String getEditorial() {
+		return editorial;
+	}
+
+	public void setEditorial(String editorial) {
+		this.editorial = editorial;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public String getPaisAutor() {
+		return paisAutor;
+	}
+
+	public void setPaisAutor(String paisAutor) {
+		this.paisAutor = paisAutor;
+	}
+
+	public int getNumPaginas() {
+		return numPaginas;
+	}
+
+	public void setNumPaginas(int numPaginas) {
+		this.numPaginas = numPaginas;
+	}
+
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+}

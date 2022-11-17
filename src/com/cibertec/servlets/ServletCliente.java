@@ -1,0 +1,127 @@
+package com.cibertec.servlets;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.cibertec.beans.ClienteDTO;
+import com.cibertec.dao.MySQLClienteDao;
+import com.cibertec.services.ClienteService;
+
+
+/**
+ * Servlet implementation class ServletCliente
+ */
+@WebServlet("/ServletCliente")
+public class ServletCliente extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	ClienteService serviCliente = new ClienteService();
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletCliente() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+    
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String tipo = request.getParameter("tipo");
+		if (tipo.equals("listar"))
+			listar(request, response);
+		else if (tipo.equals("registrar"))
+			registrar(request, response);
+		else if (tipo.equals("buscar"))
+			buscar(request, response);
+		else if (tipo.equals("actualizar"))
+			actualizar(request, response);
+		else if (tipo.equals("eliminar"))
+			eliminar(request, response);
+		else if (tipo.equals("buscardistrit"))
+			buscardistrit(request,response);
+
+	}
+	private void buscardistrit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String distrito = request.getParameter("distrito");
+		List<ClienteDTO> info = new MySQLClienteDao().clientesDistrito(distrito);
+		request.setAttribute("data", info);
+		request.getRequestDispatcher("listarClientesDistrito.jsp").forward(request, response);
+		
+	}
+
+	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("data", serviCliente.listaCliente());;
+		request.getRequestDispatcher("listarCliente.jsp").forward(request, response);
+
+	}
+	
+	private void registrar (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ClienteDTO obj = new ClienteDTO();
+	      String nom = request.getParameter("txt_nom");
+	      String ape = request.getParameter("txt_ape");
+	      String dni = request.getParameter("txt_dni");
+	      String direc = request.getParameter("txt_direc");
+	      String distrito = request.getParameter("txt_distrito");
+	      String fecha = request.getParameter("txt_fecha");
+	      obj.setNomCliente(nom);
+	      obj.setApeCliente(ape);
+	      obj.setDni(Integer.parseInt(dni));
+	      obj.setDireCliente(direc);
+	      obj.setDistrito(distrito);
+	      obj.setFechaNaci(fecha);
+	      int estado = serviCliente.registrarCliente(obj);
+	      if (estado != -1)
+	         listar(request, response);
+	      else
+	         response.sendRedirect("error.html");
+	}
+	
+	private void actualizar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 ClienteDTO obj = new ClienteDTO();
+	      String cod = request.getParameter("txt_cod");
+	      String nom = request.getParameter("txt_nom");
+	      String ape = request.getParameter("txt_ape");
+	      String dni = request.getParameter("txt_dni");
+	      String direc = request.getParameter("txt_direc");
+	      String distrito = request.getParameter("txt_distrito");
+	      String fecha = request.getParameter("txt_fecha");
+	      obj.setIdCliente(Integer.parseInt(cod));;
+	      obj.setNomCliente(nom);
+	      obj.setApeCliente(ape);
+	      obj.setDni(Integer.parseInt(dni));
+	      obj.setDireCliente(direc);
+	      obj.setDistrito(distrito);
+	      obj.setFechaNaci(fecha);
+	      int estado = serviCliente.actualizarCliente(obj);
+	      if (estado != -1)
+	         listar(request, response);
+	      else
+	         response.sendRedirect("error.html");
+	}
+	
+	private void buscar (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 String dato = request.getParameter("cod");
+	      int codigo = Integer.parseInt(dato);
+	      ClienteDTO x = serviCliente.buscarCliente(codigo);
+	      request.setAttribute("registro", x);
+	      request.getRequestDispatcher("actualizarCliente.jsp").forward(request, response);
+	}
+	
+
+	
+	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		  String dato = request.getParameter("cod");
+	      int codigo = Integer.parseInt(dato);
+	     serviCliente.eliminarCliente(codigo);
+	      request.getRequestDispatcher("ServletCliente?tipo=listar").forward(request, response);
+	}
+	
+
+}
